@@ -1,3 +1,4 @@
+name: Testing for the Workflow
 on:
     push:
         branches:
@@ -9,3 +10,5 @@ jobs:
         steps:
             - name: Print Passes
               run: echo "Test passed"
+            - name: Print Branch
+              run: echo "Current branch ${{ github.ref }}"
