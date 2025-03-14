@@ -1,0 +1,11 @@
+on:
+    push:
+        branches:
+            "main"
+
+jobs:
+    print_test_passed:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Print Passes
+              run: echo"Test passed"
