@@ -8,6 +8,16 @@ jobs:
     print_test_passed:
         runs-on: ubuntu-latest
         steps:
+            - name: Run Turbo Ignore
+              run: |
+                echo "Running script"
+
+                set +e
+                npx turbo-ignore web
+                exit_code=$?
+                set -e
+
+                echo "Exit code: $exit_code"
             - name: Print Passes
               run: echo "Test passed"
             - name: Print Branch
