@@ -24,7 +24,7 @@ jobs:
 
                 echo "Exit code: $exit_code"
 
-                if [ $exit_code -eq 0]; then
+                if [ $exit_code -eq 0 ]; then
                   echo "Early exit"
                   exit 0
                 else 
