@@ -5,8 +5,10 @@ on:
             "main"
 
 jobs:
-    print_test_passed:
+    ignore_test:
         runs-on: ubuntu-latest
+        outputs:
+          status_code: ${{ steps.check.outputs.earlyExit }}
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -14,6 +16,7 @@ jobs:
                 fetch-depth: 0
               
             - name: Run Turbo Ignore
+              id: check
               run: |
                 echo "Running script"
 
@@ -26,11 +29,15 @@ jobs:
 
                 if [ $exit_code -eq 0 ]; then
                   echo "Early exit"
-                  exit 0
+                  echo "earlyExit=0" >> $GITHUB_OUTPUT
                 else 
                   echo "Early exit failed"
+                  echo "earlyExit=1" >> $GITHUB_OUTPUT
                 fi
-            - name: Print Passes
-              run: echo "Test passed"
-            - name: Print Branch
-              run: echo "Current branch ${{ github.ref }}"
+    build_test:
+        runs-on: ubuntu-latest
+        needs: ignore_test
+        if: needs.ignore_test.outputs.status_code != 0
+        steps:
+            - name: Build
+              run: echo "Building"
