@@ -23,6 +23,13 @@ jobs:
                 set -e
 
                 echo "Exit code: $exit_code"
+
+                if [ $exit_code -eq 0]; then
+                  echo "Early exit"
+                  exit 0
+                else 
+                  echo "Early exit failed"
+                fi
             - name: Print Passes
               run: echo "Test passed"
             - name: Print Branch
