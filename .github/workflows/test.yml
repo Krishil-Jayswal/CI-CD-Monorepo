@@ -8,6 +8,9 @@ jobs:
     print_test_passed:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              
             - name: Run Turbo Ignore
               run: |
                 echo "Running script"
