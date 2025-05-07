@@ -1,0 +1,14 @@
+name: Dependency Check
+
+on:
+    workflow_run: 
+        workflows: ["Testing for the Workflow"]
+        types:
+            - completed
+
+jobs:
+    dummy-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Print
+              run: echo "Control reached."
