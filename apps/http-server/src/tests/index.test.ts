@@ -2,15 +2,7 @@ import { app } from "../index.js";
 import request from "supertest";
 import { expect, it, describe, vi } from "vitest";
 
-vi.mock("db", () => {
-    return {
-        prisma: {
-            request: {
-                create: vi.fn()
-            }
-        }
-    }
-})
+vi.mock("db");
 
 describe("Test sum endpoint", () => {
   it("Should return 400 when invalid data is sent", async () => {

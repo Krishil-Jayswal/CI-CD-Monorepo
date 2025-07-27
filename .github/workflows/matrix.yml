@@ -1,0 +1,26 @@
+name: Matrix Service
+
+on:
+    push: 
+        branches: ["main"]
+
+jobs:
+    ignore-check:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                service: [api, web]
+        outputs:
+            code: ${{ steps.check.outputs.code }}
+        steps:
+            - name: Run the script
+              id: check
+              run: echo code=${{matrix.service}} >> $GITHUB_OUTPUT
+
+    build-and-push:
+        runs-on: ubuntu-latest
+        needs: 
+            ignore-check
+        steps:
+            - name: Print the code
+              run: echo ${{ needs.ignore-check.outputs.code }}
