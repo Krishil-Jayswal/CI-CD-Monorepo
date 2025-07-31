@@ -52,7 +52,7 @@ jobs:
                 
                 
 
-                echo '${{ needs.ignore-check.outputs.build_matrix }}' | jq -r '.[]' | while read -r app_name; do
+                echo '${{ fromJson(needs.ignore-check.outputs.build_matrix) }}' | jq -r '.[]' | while read -r app_name; do
                   sha="${{ github.sha }}"
                   msg="Update ${app_name} image to ${sha}"
               
