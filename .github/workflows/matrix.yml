@@ -19,47 +19,15 @@ jobs:
                 apps=($(ls apps))
                 build_matrix=$(printf '%s\n' "${apps[@]}" | jq -R . | jq -cs .)
                 echo "build_matrix=$build_matrix" >> "$GITHUB_OUTPUT"
-    
-    build-and-push:
-        runs-on: ubuntu-latest
-        needs: 
-            ignore-check
-        strategy:
-            matrix:
-                app: ${{ fromJson(needs.ignore-check.outputs.build_matrix) }}
-        steps:
-            - name: Build
-              run: |
-                echo "{\"name\":\"${{ matrix.app }}\",\"commit\":\"${{ github.sha }}\",\"message\":\"Update ${{ matrix.app }} image to ${{ github.sha }}\"}"
 
     update-tag:
         runs-on: ubuntu-latest
         needs: 
-          - build-and-push
           - ignore-check
 
         steps:
             - name: Clone Gitops repo, update, and push
-              env:
-                PAT: ${{ secrets.PAT_TOKEN }}
               run: |
-                git clone https://github.com/Krishil-Jayswal/Gitops.git
-                
-                cd Gitops
-                
-                git config user.name "GitHub Actions Bot"
-                git config user.email "actions@github.com"
-                
-                
-
                 echo '${{ needs.ignore-check.outputs.build_matrix }}' | jq -r '.[]' | while read -r app_name; do
-                  sha="${{ github.sha }}"
-                  msg="Update ${app_name} image to ${sha}"
-              
-                  sed -i "s|image: jkrishil/ci-cd-monorepo-${app_name}:.*|image: jkrishil/ci-cd-monorepo-${app_name}:${sha}|" "ci-cd-monorepo/${app_name}/deployment.yml"
-                  
-                  git add "ci-cd-monorepo/${app_name}/deployment.yml"
-                  git commit -m "$msg"
+                  echo app_name
                 done
-
-                git push https://${PAT}@github.com/Krishil-Jayswal/Gitops.git main
