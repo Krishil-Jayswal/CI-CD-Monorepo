@@ -36,6 +36,6 @@ jobs:
                 git config user.email "actions@github.com"
 
                 echo '${{ needs.ignore-check.outputs.build_matrix }}' | jq -r '.[]' | while read -r app_name; do
-                  sed -i "s|image: jkrishil/ci-cd-monorepo-${app_name}:.*|image: jkrishil/ci-cd-monorepo-${app_name}:${{ github.sha }}|" "ci-cd-monorepo/$app_name/deployment.yml"
+                  sed -i "s|image: jkrishil/ci-cd-monorepo-${app_name}:.*|image: jkrishil/ci-cd-monorepo-${app_name}:${{ github.sha }}|" "ci-cd-monorepo/${app_name}/deployment.yml"
                   cat "ci-cd-monorepo/$app_name/deployment.yml"
                 done
