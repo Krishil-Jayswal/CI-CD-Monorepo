@@ -44,11 +44,13 @@ jobs:
                 PAT: ${{ secrets.PAT_TOKEN }}
               run: |
                 git clone https://github.com/Krishil-Jayswal/Gitops.git
-
+                
+                cd Gitops
+                
                 git config user.name "GitHub Actions Bot"
                 git config user.email "actions@github.com"
                 
-                cd Gitops
+                
 
                 echo '${{ needs.ignore-check.outputs.build_matrix }}' | jq -r '.[]' | while read -r app_name; do
                   sha="${{ github.sha }}"
